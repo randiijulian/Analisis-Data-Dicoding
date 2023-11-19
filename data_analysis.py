@@ -8,17 +8,732 @@ Original file is located at
 
 Nama : Randi Julian Saputra
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/randiijulian/Machine-Learning-Terapan-Dicoding/blob/main/Recommender%20System/Recommender_System.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/randiijulian/Analisis-Data-Dicoding/blob/main/Data_Analysis.ipynb)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?logo=linkedin)](https://www.linkedin.com/in/randijulian/)
-[![Github](https://img.shields.io/badge/Open%20In-GitHub-lightgrey?logo=github)](https://github.com/randiijulian)
-[![Dataset](https://img.shields.io/badge/Dataset-Download-green)](https://www.kaggle.com/datasets/arashnic/book-recommendation-dataset)
+[![Github](https://img.shields.io/badge/GitHub-Profile-lightgrey?logo=github)](https://github.com/randiijulian)
+[![Dataset](https://img.shields.io/badge/Dataset-Download-green)](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
 
-## Project Submission Dicoding Analysis Data with Python
+# Project Submission Dicoding Analysis Data with Python : E-Commerce
 ****
 
+## Business Questions
+
 ---
+
+- Bagaimana performa penjualan dan revenue perusahaan dalam 3 tahun terakhir?
+- Produk apa yang paling banyak dan paling sedikit diminati?
+- Bagaimana demografi pelanggan yang kita miliki?
+- Bagaimana demografi penjual yang kita miliki?
+
+## Import Necessary Library
+
+---
+
+**Connect to Drive**
 """
 
 from google.colab import drive
 drive.mount('/content/drive')
 
+# Commented out IPython magic to ensure Python compatibility.
+# %cd "/content/drive/MyDrive/Data Science Dicoding/Data Analysis"
+
+"""**Load Dataset**"""
+
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+"""## Data Wrangling
+
+---
+
+### Gathering Data
+
+#### Customers Atribute
+"""
+
+import pandas as pd
+customers = pd.read_csv("/content/drive/MyDrive/Data Science Dicoding/Data Analysis/Dataset/E-Commerce/customers_dataset.csv")
+customers
+
+"""#### Products Atribute"""
+
+import pandas as pd
+products = pd.read_csv("/content/drive/MyDrive/Data Science Dicoding/Data Analysis/Dataset/E-Commerce/products_dataset.csv")
+products
+
+"""#### Sellers Atribute"""
+
+import pandas as pd
+sellers = pd.read_csv("/content/drive/MyDrive/Data Science Dicoding/Data Analysis/Dataset/E-Commerce/sellers_dataset.csv")
+sellers
+
+"""#### Order Payments Atribute"""
+
+import pandas as pd
+order_payments = pd.read_csv("/content/drive/MyDrive/Data Science Dicoding/Data Analysis/Dataset/E-Commerce/order_payments_dataset.csv")
+order_payments
+
+"""#### Order Items Atribute"""
+
+import pandas as pd
+order_items = pd.read_csv("/content/drive/MyDrive/Data Science Dicoding/Data Analysis/Dataset/E-Commerce/order_items_dataset.csv")
+order_items
+
+"""#### Orders Atribute"""
+
+import pandas as pd
+orders = pd.read_csv("/content/drive/MyDrive/Data Science Dicoding/Data Analysis/Dataset/E-Commerce/orders_dataset.csv")
+orders
+
+"""### Assessing Data
+
+#### Review Data Customer
+"""
+
+customers.info()
+
+"""Deskripsi variabel pada dataset customers"""
+
+customers.describe()
+
+"""Melakukan pengecekan missing value pada dataset customers"""
+
+customers.isna().sum()
+
+"""Melakukan pengecekan duplikasi pada dataset customers"""
+
+print("Jumlah duplikasi pada customers: ", products.duplicated().sum())
+
+"""#### Review Data Products"""
+
+products.info()
+
+"""Deskripsi variabel pada dataset products"""
+
+products.describe()
+
+"""Melakukan pengecekan missing value pada dataset products"""
+
+products.isna().sum()
+
+"""Melakukan pengecekan duplikasi pada dataset products"""
+
+print("Jumlah duplikasi pada products: ", products.duplicated().sum())
+
+"""#### Review Data Sellers"""
+
+sellers.info()
+
+"""Deskripsi variabel pada dataset sellers"""
+
+sellers.describe()
+
+"""Melakukan pengecekan missing value pada dataset sellers"""
+
+sellers.isna().sum()
+
+"""Melakukan pengecekan duplikasi pada dataset sellers"""
+
+print("Jumlah duplikasi pada sellers: ", sellers.duplicated().sum())
+
+"""#### Review Data Order Payments"""
+
+order_payments.info()
+
+"""Deskripsi variabel pada dataset order payments"""
+
+order_payments.describe()
+
+"""Melakukan pengecekan missing value pada dataset order payments"""
+
+order_payments.isna().sum()
+
+"""Melakukan pengecekan duplikasi pada dataset order payments"""
+
+print("Jumlah duplikasi pada order payments: ", order_payments.duplicated().sum())
+
+"""#### Review Data Order Items"""
+
+order_items.info()
+
+"""Deskripsi variabel pada dataset order items"""
+
+order_items.describe()
+
+"""Melakukan pengecekan missing value pada dataset order items"""
+
+order_items.isna().sum()
+
+"""Melakukan pengecekan duplikasi pada dataset order items"""
+
+print("Jumlah duplikasi pada order items: ", order_items.duplicated().sum())
+
+"""#### Review Data Orders"""
+
+orders.info()
+
+"""Deskripsi variabel pada dataset orders"""
+
+orders.describe()
+
+"""Melakukan pengecekan missing value pada dataset orders"""
+
+orders.isna().sum()
+
+"""Melakukan pengecekan duplikasi pada dataset orders"""
+
+print("Jumlah duplikasi pada orders: ", orders.duplicated().sum())
+
+"""### Data Cleansing
+
+#### Cleansing Data Customers
+
+Data yang terdapat pada customers dataset sudah bersih, maka tidak dilakukan data cleansing
+
+#### Cleansing Data Products
+
+Melakukan pengecekan missing value pada kolom product_category_name
+"""
+
+products[products.product_category_name.isna()]
+
+"""Menghapus missing value yang terdapat pada kolom product_category_name"""
+
+products.dropna(axis=0, subset=['product_category_name'], inplace=True)
+
+products.isna().sum()
+
+"""Menampilkan baris data yang mengandung missing value pada kolom product_weight_g"""
+
+products[products.product_weight_g.isna()]
+
+"""Mengisi missing value pada product_weight_g, product_length_cm & product_width_cm dengan menggunakan nilai mean"""
+
+products.product_weight_g.fillna(value=products.product_weight_g.mean(), inplace=True)
+products.product_length_cm.fillna(value=products.product_length_cm.mean(), inplace=True)
+products.product_height_cm.fillna(value=products.product_height_cm.mean(), inplace=True)
+products.product_width_cm.fillna(value=products.product_width_cm.mean(), inplace=True)
+
+products.isna().sum()
+
+"""#### Cleansing Data Sellers
+
+Data yang terdapat pada sellers dataset sudah bersih, maka tidak dilakukan data cleansing
+
+#### Cleansing Data Order Payments
+
+Data yang terdapat pada order payments dataset sudah bersih, maka tidak dilakukan data cleansing
+
+#### Cleansing Data Order Items
+
+Mengubah tipe data pada kolom shipping_limit_dataset menjadi datetime
+"""
+
+datetime_column = ["shipping_limit_date"]
+
+for column in datetime_column:
+    order_items[column] = pd.to_datetime(order_items[column])
+
+order_items.info()
+
+"""Menampilkan baris data yang memiliki nilai price minimum"""
+
+order_items[order_items.price == order_items.price.min()]
+
+"""Menampilkan value price minimum diatas 0.85"""
+
+order_items.sort_values("price")
+
+"""Mengubah nilai value price 0.85 menjadi 1.20"""
+
+order_items.replace({'price': 0.85}, 1.20, inplace=True)
+
+order_items.describe()
+
+"""#### Cleansing Data Orders
+
+Mengubah tipe data pada kolom order_purchase_timestamp, order_approved_at, order_delivered_carrier_date,
+order_delivered_customer_date, dan order_estimated_delivery_date menjadi datetime
+"""
+
+datetime_column = ["order_purchase_timestamp", "order_approved_at", "order_delivered_carrier_date",
+"order_delivered_customer_date", "order_estimated_delivery_date"]
+
+for column in datetime_column:
+    orders[column] = pd.to_datetime(orders[column])
+
+orders.info()
+
+"""Melakukan pengecekan missing value pada kolom order_approved_at"""
+
+orders[orders.order_approved_at.isna()]
+
+"""Mengisi missing vlaue pada kolom order_approved_at dengan menggunakan nilai 0"""
+
+orders.order_approved_at.fillna(value=0, inplace=True)
+
+"""Mengisi missing value pada kolom order_delivered_carier_date dengan menggunakan nilai 0"""
+
+orders.order_delivered_carrier_date.fillna(value=0, inplace=True)
+
+"""Mengisi missing value pada kolom order_delivered_customer_data dengan menggunakan nilai 0"""
+
+orders.order_delivered_customer_date.fillna(value=0, inplace=True)
+
+orders.info()
+
+datetime_column = ["order_approved_at", "order_delivered_carrier_date","order_delivered_customer_date"]
+
+for column in datetime_column:
+    orders[column] = pd.to_datetime(orders[column], errors='coerce')
+
+orders.info()
+
+"""## Exploratory Data Analysis (EDA)
+
+---
+
+### Explore Data Customers
+
+Menampilkan rangkuman parameter statistik customers
+"""
+
+customers.describe(include="all")
+
+"""Menampilkan demografi pelanggan berdasarkan customer_city"""
+
+customers.groupby(by="customer_city").customer_id.nunique().sort_values(ascending=False)
+
+"""Menampilkan demografi pelanggan berdasasrkan customer_state"""
+
+customers.groupby(by="customer_state").customer_id.nunique().sort_values(ascending=False)
+
+"""### Explore Data Products
+
+Menampilkan rangkuman parameter statistik products
+"""
+
+products.describe(include="all")
+
+"""Menampilkan jumlah produk berdasarkan product_category_name"""
+
+products.groupby(by="product_category_name").product_id.nunique().sort_values(ascending=False)
+
+"""### Explore Data Sellers
+
+Menampilkan rangkuman parameter statistik sellers
+"""
+
+sellers.describe(include="all")
+
+"""Menampilkan demografi penjual berdasarkan seller_city"""
+
+sellers.groupby(by="seller_city").seller_id.nunique().sort_values(ascending=False)
+
+"""Menampilkan demografi penjual berdasarkan seller_state"""
+
+sellers.groupby(by="seller_state").seller_id.nunique().sort_values(ascending=False)
+
+"""### Explore Data Order Payments
+
+Menampilkan rangkuman parameter statistik order payments
+"""
+
+order_payments.describe(include="all")
+
+"""Menampilkan pembayaran order berdasarkan payment_value"""
+
+order_payments.groupby(by="payment_value").order_id.nunique().sort_values(ascending=False)
+
+"""### Explore Data Order Items
+
+Menampilkan rangkuman parameter statistik order items
+"""
+
+order_items.describe()
+
+"""Menampilkan jumlah order items berdasarkan price"""
+
+order_items.groupby(by="price").order_item_id.nunique().sort_values(ascending=False)
+
+"""Menampilkan jumlah order item berdasarkan freight_value"""
+
+order_items.groupby(by="freight_value").order_item_id.nunique().sort_values(ascending=False)
+
+"""### Explore Data Orders
+
+Menampilkan rangkuman parameter statistik pada orders
+"""
+
+orders.describe(include="all")
+
+"""Menampilkan jumlah order berdasarkan order_status"""
+
+orders.groupby(by="order_status").order_id.nunique().sort_values(ascending=False)
+
+"""### Explore Data Customers & Orders
+
+Menampilkan informasi customer_id berdasarkan order yang dilakukan oleh customers
+"""
+
+customer_id_in_orders_dataset = orders.customer_id.tolist()
+customers["status"] = customers["customer_id"].apply(lambda x: "Active" if x in customer_id_in_orders_dataset else "Non Active")
+customers.sample(10)
+
+"""Menampilkan status customers yang pernah melakukan order"""
+
+customers.groupby(by="status").customer_id.count()
+
+"""Menggabungkan data orders dan customers"""
+
+orders_customers_merge = pd.merge(
+    left=orders,
+    right=customers,
+    how="left",
+    left_on="customer_id",
+    right_on="customer_id"
+)
+orders_customers_merge.head()
+
+"""Menampilkan jumlah order tertinggi bersarakan customer_city"""
+
+orders_customers_merge.groupby(by="customer_city").order_id.nunique().sort_values(ascending=False).reset_index().head(10)
+
+"""Menampilkan jumlah order terendah berdasarkan customer_city"""
+
+orders_customers_merge.groupby(by="customer_city").order_id.nunique().sort_values(ascending=True).reset_index().head(10)
+
+"""Menampilkan jumlah order tertinggi berdasarkan customer_state"""
+
+orders_customers_merge.groupby(by="customer_state").order_id.nunique().sort_values(ascending=False).reset_index().head(10)
+
+"""Menampilkan jumlah order terendah berdasarkan customer_state"""
+
+orders_customers_merge.groupby(by="customer_state").order_id.nunique().sort_values(ascending=True).reset_index().head(10)
+
+"""### Explore Data Products & Order Items
+
+Menggabungkan data products dan orders items
+"""
+
+order_items_products_merge = pd.merge(
+    left=order_items,
+    right=products,
+    how="left",
+    left_on="product_id",
+    right_on="product_id"
+)
+order_items_products_merge.head()
+
+"""Menampilkan jumlah order berdasarkan product_category_name"""
+
+order_items_products_merge.groupby(by="product_category_name").order_id.nunique().sort_values(ascending=False)
+
+"""Menampilkan produk paling banyak diminati berdasarkan product_category_name"""
+
+order_items_products_merge.groupby(by="product_category_name").order_id.nunique().sort_values(ascending=False).reset_index().head(10)
+
+"""Menampilkan produk paling sedikit diminati berdasarkan product_category_name"""
+
+order_items_products_merge.groupby(by="product_category_name").order_id.nunique().sort_values(ascending=True).reset_index().head(10)
+
+"""### Explore Data Orders Items & Orders
+
+Menggabungkan data order items dan orders
+"""
+
+order_items_orders_merge = pd.merge(
+    left=order_items,
+    right=orders,
+    how="left",
+    left_on="order_id",
+    right_on="order_id"
+)
+order_items_orders_merge.head()
+
+"""Menghapus order dengan status canceled"""
+
+order_items_orders_merge[order_items_orders_merge.order_status != 'canceled']
+
+"""Menampilkan penjualan berdasarkan order_purchase_timestamp"""
+
+order_items_orders_merge.groupby(by="order_purchase_timestamp").agg({
+    "order_id": "nunique",
+    "order_item_id": "sum",
+    "price": "sum"
+}).sort_values(by="order_purchase_timestamp", ascending=True).reset_index()
+
+"""### Explore All Data"""
+
+# Menggabungkan data orders_dataset, customers_dataset, products_dataset, dan order_items_dataset
+x_df = pd.merge(
+    left=orders_customers_merge, # Berisi orders_dataset dan customers_dataset
+    right=order_items_products_merge, # Berisi order_items_dataset dan products_dataset
+    how="left",
+    left_on="order_id",
+    right_on="order_id"
+)
+x_df
+
+# Menggabungkan dataset x_df dan sellers_dataset
+y_df = pd.merge(
+    left=x_df,
+    right=sellers,
+    how="left",
+    left_on="seller_id",
+    right_on="seller_id"
+)
+y_df
+
+# Menggabungkan dataset y_df dan order_payments_dataset menjadi all_df (semua kumpulan dataset yang dibutuhkan dalam analisis ini)
+all_df = pd.merge(
+    left=y_df,
+    right=order_payments,
+    how="left",
+    left_on="order_id",
+    right_on="order_id"
+)
+all_df.head()
+
+"""## Visualization & Explanatory Analysis
+
+---
+
+### Bagaimana performa penjualan dan revenue perusahaan dalam 3 tahun terakhir?
+"""
+
+# Menampilkan performa penjualan (order dan revenue) per bulan
+monthly_orders_df = order_items_orders_merge.resample(rule='M', on='order_purchase_timestamp').agg({
+    "order_id": "nunique",
+    "price": "sum"
+})
+
+monthly_orders_df.index = monthly_orders_df.index.strftime('%Y-%m')
+
+monthly_orders_df = monthly_orders_df.reset_index()
+monthly_orders_df.rename(columns={
+    "order_id": "order_count",
+    "price": "revenue"
+}, inplace=True)
+
+monthly_orders_df
+
+# menampilkan performa penjualan (total order per bulan) menggunakan line chart
+monthly_orders_df = order_items_orders_merge.resample(rule='M', on='order_purchase_timestamp').agg({
+    "order_id": "nunique",
+    "price": "sum"
+})
+
+monthly_orders_df.index = monthly_orders_df.index.strftime('%y-%m')
+
+monthly_orders_df = monthly_orders_df.reset_index()
+monthly_orders_df.rename(columns={
+    "order_id": "order_count",
+    "price": "revenue"
+}, inplace=True)
+
+plt.figure(figsize=(12, 5))
+plt.plot(monthly_orders_df["order_purchase_timestamp"], monthly_orders_df["order_count"], marker='o', linewidth=2, color="#72BCD4")
+plt.title("Total Order per Bulan (2016-2018)", loc="center", fontsize=20)
+plt.xticks(fontsize=10, rotation=45)
+plt.yticks(fontsize=10)
+plt.show()
+
+# menampilkan performa penjualan (total revenue per bulan) dengan line chart
+plt.figure(figsize=(10, 5))
+plt.plot(
+    monthly_orders_df["order_purchase_timestamp"],
+    monthly_orders_df["revenue"],
+    marker='o',
+    linewidth=2,
+    color="#72BCD4"
+)
+
+plt.title("Total Revenue per Bulan (2016-2018)", loc="center", fontsize=20)
+plt.xticks(fontsize=10, rotation=45)
+plt.yticks(fontsize=10)
+plt.show()
+
+"""### Produk apa yang paling banyak dan paling sedikit diminati oleh pembeli?"""
+
+# menampilkan 5 produk yang paling banyak peminatnya berdasarkan jumlah order yang dilakukan oleh pelanggan
+sum_order_items_df = order_items_products_merge.groupby("product_category_name").order_item_id.sum().sort_values(ascending=False).reset_index()
+sum_order_items_df.head()
+
+# menampilkan 5 produk dengan sedikit peminat berdasarkan jumlah order yang dilakukan oleh pelanggan
+sum_order_items_df = order_items_products_merge.groupby("product_category_name").order_item_id.sum().sort_values(ascending=True).reset_index()
+sum_order_items_df.head()
+
+# menampilkan 5 produk dengan banyak peminat dan sedikit peminat dalam bentuk bar plot
+fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(24,6))
+
+colors = ["#72BCD4", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
+
+sns.barplot(x="order_item_id", y="product_category_name", data=sum_order_items_df.sort_values(by="order_item_id", ascending=False).head(5), palette=colors, ax=ax[0])
+ax[0].set_ylabel(None)
+ax[0].set_xlabel(None)
+ax[0].set_title("Produk yang Paling Banyak Diminati", loc="center", fontsize=15)
+ax[0].tick_params(axis = 'y', labelsize=12)
+
+sns.barplot(x="order_item_id", y="product_category_name", data=sum_order_items_df.sort_values(by="order_item_id", ascending=True).head(5), palette=colors, ax=ax[1])
+ax[1].set_ylabel(None)
+ax[1].set_xlabel(None)
+ax[1].invert_xaxis()
+ax[1].yaxis.set_label_position("right")
+ax[1].yaxis.tick_right()
+ax[1].set_title("Produk yang Paling Sedikit Diminati", loc="center", fontsize=15)
+ax[1].tick_params(axis='y', labelsize=12)
+
+plt.suptitle("Produk Paling Banyak dan Paling Sedikit Diminati oleh Pelanggan", fontsize=20)
+plt.show()
+
+"""### Bagaimana demografi pelanggan yang kita miliki?"""
+
+# Menampilkan 10 kota dengan pelanggan terbanyak dalam bentuk bar plot
+top10_city_df = orders_customers_merge.groupby("customer_city").customer_id.nunique().sort_values(ascending=False).reset_index().head(10)
+top10_city_df.rename(columns={
+    "customer_id": "customer_count"
+}, inplace=True)
+top10_city_df
+plt.figure(figsize=(10, 5))
+colors_ = ["#72BCD4", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
+sns.barplot(
+    x="customer_count",
+    y="customer_city",
+    data=top10_city_df.sort_values(by="customer_count", ascending=False),
+    palette=colors_
+)
+plt.title("10 Kota dengan Pelanggan Terbanyak", loc="center", fontsize=15)
+plt.ylabel(None)
+plt.xlabel(None)
+plt.tick_params(axis='y', labelsize=12)
+plt.show()
+
+# Menampilkan 10 kota dengan pelanggan paling sedikit dalam bentuk bar plot
+top10_city_df = orders_customers_merge.groupby("customer_city").customer_id.nunique().sort_values(ascending=True).reset_index().head(10)
+top10_city_df.rename(columns={
+    "customer_id": "customer_count"
+}, inplace=True)
+top10_city_df
+plt.figure(figsize=(10, 5))
+colors_ = ["#72BCD4", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
+sns.barplot(
+    x="customer_count",
+    y="customer_city",
+    data=top10_city_df.sort_values(by="customer_count", ascending=False),
+    palette=colors_
+)
+plt.title("10 Kota dengan Pelanggan Paling Sedikit", loc="center", fontsize=15)
+plt.ylabel(None)
+plt.xlabel(None)
+plt.tick_params(axis='y', labelsize=12)
+plt.show()
+
+# Menampilkan Demografi Pelanggan Berdasarkan Negara dalam bentuk bar plot
+state_df = orders_customers_merge.groupby("customer_state").customer_id.nunique().sort_values(ascending=False).reset_index()
+state_df.rename(columns={
+    "customer_id": "customer_count"
+}, inplace=True)
+state_df
+plt.figure(figsize=(10, 5))
+colors_ = ["#72BCD4", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
+sns.barplot(
+    x="customer_count",
+    y="customer_state",
+    data=state_df.sort_values(by="customer_count", ascending=False),
+    palette=colors_
+)
+plt.title("Demografi Pelanggan Berdasarkan Negara", loc="center", fontsize=15)
+plt.ylabel(None)
+plt.xlabel(None)
+plt.tick_params(axis='y', labelsize=12)
+plt.show()
+
+"""### Bagaimana demografi penjual yang kita miliki?"""
+
+# Menampilkan 10 kota dengan penjual terbanyak dalam bentuk bar plot
+seller_df = sellers.groupby("seller_city").seller_id.nunique().sort_values(ascending=False).reset_index().head(10)
+seller_df.rename(columns={
+    "seller_id": "seller_count"
+}, inplace=True)
+seller_df
+plt.figure(figsize=(10, 5))
+colors_ = ["#72BCD4", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
+sns.barplot(
+    x="seller_count",
+    y="seller_city",
+    data=seller_df.sort_values(by="seller_count", ascending=False),
+    palette=colors_
+)
+plt.title("10 Kota dengan Penjual Terbanyak", loc="center", fontsize=15)
+plt.ylabel(None)
+plt.xlabel(None)
+plt.tick_params(axis='y', labelsize=12)
+plt.show()
+
+# Menampilkan 10 kota dengan penjual paling sedikit dalam bentuk bar plot
+seller_df = sellers.groupby("seller_city").seller_id.nunique().sort_values(ascending=True).reset_index().head(10)
+seller_df.rename(columns={
+    "seller_id": "seller_count"
+}, inplace=True)
+seller_df
+plt.figure(figsize=(10, 5))
+colors_ = ["#72BCD4", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
+sns.barplot(
+    x="seller_count",
+    y="seller_city",
+    data=seller_df.sort_values(by="seller_count", ascending=False),
+    palette=colors_
+)
+plt.title("10 Kota dengan Penjual Paling Sedikit", loc="center", fontsize=15)
+plt.ylabel(None)
+plt.xlabel(None)
+plt.tick_params(axis='y', labelsize=12)
+plt.show()
+
+"""## Conclusion
+
+---
+
+- **Conclution pertanyaan 1: Bagaimana performa penjualan dan revenue perusahaan dalam 3 tahun terakhir?**
+---
+Berdasarkan Visualization & Explanatory Analysis di atas disimpulkan bahwa pergerakan grafik Total Order per Bulan (2016-2018) berpengaruh pada grafik Total Revenue per Bulan (2016-2018).
+Baik jumlah order maupun penjualan tertinggi terjadi pada November 2017. Namun, telah terjadi penurunan untuk jumlah order sejak Maret 2018 dan untuk total revenue juga telah terjadi penurunan sejak Mei 2018.
+
+Perlu analisis lebih lanjut untuk mengetahui adanya penurunan-penurunan ini dan apa solusi yang tepat untuk mengatasinya.
+
+- **Conclution pertanyaan 2: Produk apa yang paling banyak dan paling sedikit diminati?**
+---
+Berdasarkan Visualization & Explanatory Analysis di atas disimpulkan bahwa 5 produk dengan order terbanyak atau paling diminati pembeli adalah cama_mesa_banho dengan 13665 order, moveis_decoracao dengan 11540 order, beleza_saude dengan 11081 order, esporte_lazer dengan 9932 order, dan informatica_acessorios dengan 9874 order. Sedangkan untuk 5 produk dengan peminat paling sedikit adalah seguros_e_servicos dengan 2 order, fashion_roupa_infanto_juvenil dengan 8 order, pc_gamer dengan 11 order, portateis_cozinha_e_preparadores_de_alimentos dengan 16 order, dan cds_dvds_musicais dengan 16 order.
+
+Untuk produk-produk dengan peminat sedikit ini perlu adanya analisis lebih lanjut. Dalam kurun waktu 3 tahun ini, berapa revenue yang dihasilkan dari banyaknya order tersebut. Apakah memang harganya mahal sehingga meskipun penjualan sedikit dapat menghasilkan revenue yang menguntungkan atau apakah memang produk-produk ini sepi peminat. Kemudian, langkah apa yang dilakukan untuk membuat stok yang sudah terlanjur diproduksi dapat terjual habis dan perlu dipertimbangkan kembali apakah produk ini layak untuk dilanjutkan produksinya.
+
+- **Conclution pertanyaan 3: Bagaimana demografi pelanggan yang kita miliki?**
+---
+Berdasarkan Visualization & Explanatory Analysis di atas disimpulkan bahwa 10 pelanggan terbanyak berada di kota Sao Paulo, Rio de Janeiro, Belo Horizonte, Brasilia, Curitiba, Campinas, Porto Alegre, Salvador, Guarulhos, dan Sao Bernardo do Campo. Sedangkan 10 negara dengan pelanggan terbanyak berada di negara dengan inisial SP, RJ, MG, RS, PR, SC, BA, DF, ES, dan GO.
+
+Perlu adanya analisis lebih lanjut terkait performa penjualan di wilayah-wilayah dengan pembelian yang rendah. Apakah berkaitan dengan kompetitor, jumlah seller, atau terkait dengan customer behavior tertentu.
+
+- **Conclution pertanyaan 4:Bagaimana demografi penjual yang kita miliki?**
+---
+Berdasarkan Visualization & Explanatory Analysis di atas disimpulkan bahwa 10 kota dengan jumlah penjual terbanyak berada di kota Sao Paulo, Curitiba, Rio de Janeiro, Belo Horizonte, Ribeirao Preto, Guarulhos, Ibitinga, Santo Andre, Campinas, dan Maringa. Sedangkan 10 negara dengan jumlah penjual terbanyak berada di negara SP, PR, MG, SC, RJ, RS, GO, DF, ES, BA.
+
+Perlu adanya analisis lebih lanjut terkait bagaimana mengoptimalkan penjualan dari setiap seller. Hal ini terkait campaign, pemilihan produk, atau yang lainnya. Selain itu perlu adanya reward dengan pencapaian penjualan tertentu untuk membakar semangat para seller dalam memperjual-belikan produknya.
+
+- **Diagnostic Analytics: Evaluasi Hasil Penjualan Produk 2016-2018**
+---
+Keempat pertanyaan di atas telah mendeskripsikan pola-pola tertentu terkait performa penjualan dalam rentang waktu 2016-2018. Dalam kurun waktu 3 tahun ini berikut adalah hasil evaluasi yang diperoleh:
+
+a. Berhenti memproduksi terlebih dahulu produk dengan total order dan revenue rendah dalam kurun waktu 2016-2018. Kemudian, dioptimalkan distribusi dan pemasarannya. Jika dalam waktu 6 bulan ke depan tidak ada peningkatan, maka produk tersebut dinyatakan berhenti produksi secara permanen.
+
+b. Menganalisis lebih lanjut terkait perilaku konsumen, kompetitior, pemilihan tempat usaha, dan strategi pemasaran yang telah dipakai. Terutama, pada kota atau negara dengan jumlah pelanggan yang sedikit. Membuat strategi pemasaran baru dan melakukan uji coba selama 1 tahun. Jika tidak ada peningkatan, maka diputuskan untuk tidak membuka offline store di wilayah-wilayah tersebut.
+
+c. Maksimalkan campaign pada waktu-waktu tertentu (waktu biasa pembeli melakukan order) dan event-event tertentu.
+
+d. Beri reward untuk seller dengan penjualan tertarget.
+"""
+
+all_df.to_csv("/content/drive/MyDrive/Data Science Dicoding/Data Analysis/Dataset/E-Commerce/main_data.csv", index=False)
