@@ -1,3 +1,4 @@
+import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -101,8 +102,7 @@ def create_seller_city_df(df):
 
 
 # load berkas all_data sebagai sebuah DataFrame
-all_df = pd.read_csv(
-    "D:\Github Folder\Analisis-Data-Dicoding\Dashboard\main_data.csv")
+all_df = pd.read_csv("Dashboard\main_data.csv")
 
 
 # mengurutkan DataFrame berdasarkan order_purchase_timestamp
