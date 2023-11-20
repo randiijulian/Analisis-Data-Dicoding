@@ -20,8 +20,6 @@ streamlit run dashboard.py
 ```
 
 ## Tampilan Dashboard
-![image](https://github.com/sitihafsoh/submission/assets/107082735/32f08426-c08e-4edc-b052-5fbce25da09f)
-![image](https://github.com/sitihafsoh/submission/assets/107082735/11793b1f-0b56-47a9-9342-c77dece4cc34)
-![image](https://github.com/sitihafsoh/submission/assets/107082735/a588aee9-8397-4b0d-8c82-7c697959e09c)
-![image](https://github.com/sitihafsoh/submission/assets/107082735/0a3b29d2-997f-4eea-a223-ea3300a47b87)
-![image](https://github.com/sitihafsoh/submission/assets/107082735/a29a4550-8779-4de7-b3f2-9452b886a650)
+![image](https://github-production-user-asset-6210df.s3.amazonaws.com/81604461/284195878-6f42be24-2605-4c99-8221-9be917ee84e9.png)
+![image](https://github-production-user-asset-6210df.s3.amazonaws.com/81604461/284195858-5cdf4571-abbb-44f2-81b2-31ee7904385d.png)
+![image](https://github-production-user-asset-6210df.s3.amazonaws.com/81604461/284195873-3f32e55a-a6e1-4732-bc14-e6ec31846392.png)
