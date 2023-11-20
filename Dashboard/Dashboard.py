@@ -121,8 +121,8 @@ max_date = all_df["order_purchase_timestamp"].max()
 
 with st.sidebar:
     # Menambahkan logo perusahaan
-    st.image(
-        "https://img.freepik.com/premium-vector/ecommerce-logo-design_691522-88.jpg?w=740")
+    # st.image(
+    #     "https://img.freepik.com/premium-vector/ecommerce-logo-design_691522-88.jpg?w=740")
 
     # Mengambil start_date & end_date dari date_input
     start_date, end_date = st.date_input(
