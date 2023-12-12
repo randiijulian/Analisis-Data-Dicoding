@@ -7,7 +7,7 @@
 
 </div>
 
-# Dicoding Submission: Analysis Data with python
+# Dicoding Submission: Analysis Data with Python
 ```
 conda create --name main-ds
 conda activate main-ds
